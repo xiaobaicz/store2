@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-
+    implementation(project(":store2"))
 }
 
 java {

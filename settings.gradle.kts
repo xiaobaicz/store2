@@ -5,4 +5,4 @@ pluginManagement {
 }
 
 rootProject.name = "store2"
-include("app", "store2", "store2-mmap")
+include("app", "store2")

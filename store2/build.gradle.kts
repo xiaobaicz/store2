@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-
+    api(kotlin("reflect"))
+    api(libs.gson)
 }
 
 java {
