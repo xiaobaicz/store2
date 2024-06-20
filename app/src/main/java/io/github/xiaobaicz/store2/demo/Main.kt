@@ -5,7 +5,6 @@ import io.github.xiaobaicz.store2.saver.MMapSaver
 import io.github.xiaobaicz.store2.serializer.GsonSerializer
 
 fun main() {
-    MMapSaver.dir = "../"
     val local: Local by localStore
     println(localStore.has(Local::version))
     local.version = 100

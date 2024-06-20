@@ -2,6 +2,8 @@ package io.github.xiaobaicz.store2
 
 import io.github.xiaobaicz.store2.exception.MethodDeclarationClassException
 import io.github.xiaobaicz.store2.exception.MethodMatchingException
+import io.github.xiaobaicz.store2.saver.MemorySaver
+import io.github.xiaobaicz.store2.serializer.SimpleSerializer
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import kotlin.reflect.KClass
@@ -96,9 +98,9 @@ class Store<R : Any> private constructor(
     }
 
     class Factory {
-        private lateinit var saver: Saver
+        private var saver: Saver = MemorySaver
 
-        private lateinit var serializer: Serializer
+        private var serializer: Serializer = SimpleSerializer
 
         private fun <T : Any> newAndCache(table: String, kClass: KClass<T>): Store<T> {
             return Store(table, kClass, saver, serializer).apply {
