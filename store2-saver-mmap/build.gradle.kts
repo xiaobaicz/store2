@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    api(kotlin("reflect"))
+    api(project(":store2"))
+    implementation(libs.gson)
 }
 
 java {

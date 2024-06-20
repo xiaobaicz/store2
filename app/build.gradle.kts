@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":store2"))
+    implementation(project(":store2-saver-mmap"))
+    implementation(project(":store2-serializer-gson"))
 }
 
 java {

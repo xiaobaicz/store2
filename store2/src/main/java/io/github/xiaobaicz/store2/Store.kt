@@ -95,10 +95,10 @@ class Store<R : Any> private constructor(
         private val storeCache = HashMap<String, Store<*>>()
     }
 
-    class Builder {
-        private var saver: Saver = Saver
+    class Factory {
+        private lateinit var saver: Saver
 
-        private var serializer: Serializer = Serializer
+        private lateinit var serializer: Serializer
 
         private fun <T : Any> newAndCache(table: String, kClass: KClass<T>): Store<T> {
             return Store(table, kClass, saver, serializer).apply {
@@ -110,21 +110,21 @@ class Store<R : Any> private constructor(
             return "${kClass.qualifiedName}:${saver::class.qualifiedName}:${serializer::class.qualifiedName}"
         }
 
-        fun <T : Any> build(kClass: KClass<T>): Store<T> {
+        fun <T : Any> get(kClass: KClass<T>): Store<T> {
             val token = newToken(kClass, saver, serializer)
             val table = sha1(token)
             @Suppress("UNCHECKED_CAST")
             return storeCache[table] as Store<T>? ?: newAndCache(table, kClass)
         }
 
-        inline fun <reified T : Any> build(): Store<T> = build(T::class)
+        inline fun <reified T : Any> get(): Store<T> = get(T::class)
 
-        fun saver(saver: Saver): Builder {
+        fun saver(saver: Saver): Factory {
             this.saver = saver
             return this
         }
 
-        fun serializer(serializer: Serializer): Builder {
+        fun serializer(serializer: Serializer): Factory {
             this.serializer = serializer
             return this
         }
