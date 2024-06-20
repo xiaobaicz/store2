@@ -11,9 +11,9 @@ import java.nio.file.StandardOpenOption
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
-class MMap(
+internal class MMap(
     private val table: String,
-    private val dir: String = tmpDir,
+    private val dir: String,
     private val delegate: MutableMap<String, String> = HashMap()
 ) : MutableMap<String, String> by delegate {
 
@@ -26,7 +26,9 @@ class MMap(
         private val typeToken = object : TypeToken<HashMap<String, String>>() {}
     }
 
-    private val file = File(dir, table)
+    private val file = File(dir, table).apply {
+        println("mmap: $this")
+    }
 
     private var cap = 0L
 

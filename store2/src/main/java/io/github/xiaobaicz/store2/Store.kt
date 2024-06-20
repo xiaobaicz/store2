@@ -1,5 +1,6 @@
 package io.github.xiaobaicz.store2
 
+import io.github.xiaobaicz.store2.annotation.*
 import io.github.xiaobaicz.store2.exception.MethodDeclarationClassException
 import io.github.xiaobaicz.store2.exception.MethodMatchingException
 import io.github.xiaobaicz.store2.saver.MemorySaver
@@ -42,10 +43,12 @@ class Store<R : Any> private constructor(
 
     // 处理Getter
     private fun <T> getter(returnType: KType, kProperty: KProperty<T>): Any? {
-        if (!has(kProperty) && returnType.isMarkedNullable) return null
+        if (!has(kProperty)) {
+            if (returnType.isMarkedNullable) return null
+            return getDef(returnType, kProperty)
+        }
         // 获取&反序列化
         val data = restore(kProperty)
-        if (data.isBlank()) return null
         val any = serializer.deserialization(returnType, data)
         return any
     }
@@ -59,6 +62,25 @@ class Store<R : Any> private constructor(
         }
         val data = serializer.serialization(arg)
         store(kProperty, data)
+    }
+
+    private inline fun <reified T> List<Annotation>.find(): T {
+        return find { it is T } as T
+    }
+
+    private fun <T> getDef(type: KType, kProperty: KProperty<T>): Any {
+        val annotations = kProperty.annotations
+        return when (type.classifier) {
+            Byte::class -> annotations.find<ByteDef>().value
+            Short::class -> annotations.find<ShortDef>().value
+            Int::class -> annotations.find<IntDef>().value
+            Long::class -> annotations.find<LongDef>().value
+            Float::class -> annotations.find<FloatDef>().value
+            Double::class -> annotations.find<DoubleDef>().value
+            Boolean::class -> annotations.find<BoolDef>().value
+            String::class -> annotations.find<StringDef>().value
+            else -> serializer.deserialization(type, annotations.find<AnyDef>().value)
+        }
     }
 
     fun <T> has(kProperty: KProperty<T>): Boolean = saver.has(table, kProperty.name)
