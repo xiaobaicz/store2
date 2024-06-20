@@ -18,7 +18,7 @@ internal class MMap(
 ) : MutableMap<String, String> by delegate {
 
     companion object {
-        private const val CAP_DEF = 1024 * 64L
+        private const val CAP_DEF = 1024 * 8L
         private const val SIZE_HEAD = 32
         private const val KEY_TMP_DIR = "java.io.tmpdir"
         internal val tmpDir = System.getProperty(KEY_TMP_DIR, ".")
