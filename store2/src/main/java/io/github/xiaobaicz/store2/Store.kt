@@ -15,6 +15,7 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaGetter
 import kotlin.reflect.jvm.javaSetter
+import kotlin.collections.find as listFind
 
 class Store<R : Any> private constructor(
     private val table: String,
@@ -22,6 +23,18 @@ class Store<R : Any> private constructor(
     private val saver: Saver,
     private val serializer: Serializer
 ) {
+
+    companion object {
+        private val byteDef = ByteDef()
+        private val shortDef = ShortDef()
+        private val intDef = IntDef()
+        private val longDef = LongDef()
+        private val floatDef = FloatDef()
+        private val doubleDef = DoubleDef()
+        private val boolDef = BoolDef()
+        private val stringDef = StringDef()
+        private val anyDef = AnyDef("")
+    }
 
     // Java方法->访问器 映射
     private val accessorMap = HashMap<Method, KProperty.Accessor<*>>().apply {
@@ -65,22 +78,22 @@ class Store<R : Any> private constructor(
         store(kProperty, data)
     }
 
-    private inline fun <reified T> List<Annotation>.find(): T {
-        return find { it is T } as T
+    private inline fun <reified T : Annotation> List<Annotation>.find(def: T): T {
+        return listFind { it is T } as T? ?: def
     }
 
     private fun <T> getDef(type: KType, kProperty: KProperty<T>): Any {
         val annotations = kProperty.annotations
         return when (type.classifier) {
-            Byte::class -> annotations.find<ByteDef>().value
-            Short::class -> annotations.find<ShortDef>().value
-            Int::class -> annotations.find<IntDef>().value
-            Long::class -> annotations.find<LongDef>().value
-            Float::class -> annotations.find<FloatDef>().value
-            Double::class -> annotations.find<DoubleDef>().value
-            Boolean::class -> annotations.find<BoolDef>().value
-            String::class -> annotations.find<StringDef>().value
-            else -> serializer.deserialization(type, annotations.find<AnyDef>().value)
+            Byte::class -> annotations.find(byteDef).value
+            Short::class -> annotations.find(shortDef).value
+            Int::class -> annotations.find(intDef).value
+            Long::class -> annotations.find(longDef).value
+            Float::class -> annotations.find(floatDef).value
+            Double::class -> annotations.find(doubleDef).value
+            Boolean::class -> annotations.find(boolDef).value
+            String::class -> annotations.find(stringDef).value
+            else -> serializer.deserialization(type, annotations.find(anyDef).value)
         }
     }
 
