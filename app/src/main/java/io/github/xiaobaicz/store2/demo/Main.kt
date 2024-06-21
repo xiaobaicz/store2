@@ -1,8 +1,7 @@
 package io.github.xiaobaicz.store2.demo
 
 import io.github.xiaobaicz.store2.Store
-import io.github.xiaobaicz.store2.annotation.AnyDef
-import io.github.xiaobaicz.store2.annotation.IntDef
+import io.github.xiaobaicz.store2.demo.store.Local
 import io.github.xiaobaicz.store2.saver.MMapSaver
 import io.github.xiaobaicz.store2.serializer.GsonSerializer
 
@@ -30,18 +29,5 @@ val storeFactory = Store.Factory()
 
 val localStore = storeFactory.get<Local>()
 
-interface Local {
 
-    var debug: Boolean
 
-    @IntDef(666)
-    var version: Int
-
-    @AnyDef("{\"name\": \"逗比\"}")
-    var user: User
-
-}
-
-data class User(
-    val name: String,
-)
