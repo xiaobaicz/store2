@@ -24,16 +24,16 @@ class Store<R : Any> private constructor(
     private val serializer: Serializer
 ) {
 
-    companion object {
-        private val byteDef = ByteDef()
-        private val shortDef = ShortDef()
-        private val intDef = IntDef()
-        private val longDef = LongDef()
-        private val floatDef = FloatDef()
-        private val doubleDef = DoubleDef()
-        private val boolDef = BoolDef()
-        private val stringDef = StringDef()
-        private val anyDef = AnyDef("")
+    private companion object {
+        val byteDef = ByteDef()
+        val shortDef = ShortDef()
+        val intDef = IntDef()
+        val longDef = LongDef()
+        val floatDef = FloatDef()
+        val doubleDef = DoubleDef()
+        val boolDef = BoolDef()
+        val stringDef = StringDef()
+        val anyDef = AnyDef("")
     }
 
     // Java方法->访问器 映射
@@ -62,7 +62,7 @@ class Store<R : Any> private constructor(
             return getDef(returnType, kProperty)
         }
         // 获取&反序列化
-        val data = restore(kProperty)
+        val data = saver.restore(table, kProperty.name)
         val any = serializer.deserialization(returnType, data)
         return any
     }
@@ -75,7 +75,7 @@ class Store<R : Any> private constructor(
             return
         }
         val data = serializer.serialization(arg)
-        store(kProperty, data)
+        saver.store(table, kProperty.name, data)
     }
 
     private inline fun <reified T : Annotation> List<Annotation>.find(def: T): T {
@@ -99,20 +99,21 @@ class Store<R : Any> private constructor(
 
     fun <T> has(kProperty: KProperty<T>): Boolean = saver.has(table, kProperty.name)
 
-    fun <T> store(kProperty: KProperty<T>, value: String) {
-        saver.store(table, kProperty.name, value)
-    }
-
-    fun <T> restore(kProperty: KProperty<T>): String {
-        return saver.restore(table, kProperty.name)
-    }
-
     fun <T> remove(kProperty: KProperty<T>) {
         saver.remove(table, kProperty.name)
     }
 
     fun clear() {
         saver.clear(table)
+    }
+
+    operator fun <T> get(kProperty: KProperty<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        return getter(kProperty.returnType, kProperty) as T
+    }
+
+    operator fun <T> set(kProperty: KProperty<T>, value: T) {
+        setter(kProperty, value)
     }
 
     private val proxy by lazy {
