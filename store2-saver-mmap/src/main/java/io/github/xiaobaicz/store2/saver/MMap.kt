@@ -2,14 +2,12 @@ package io.github.xiaobaicz.store2.saver
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
+import io.github.xiaobaicz.store2.utils.unzip
+import io.github.xiaobaicz.store2.utils.zip
 import java.io.File
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.nio.file.StandardOpenOption
-import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
 
 internal class MMap(
     private val table: String,
@@ -27,7 +25,7 @@ internal class MMap(
     }
 
     private val file = File(dir, table).apply {
-        println("mmap: $this")
+        println("mmap: ${this.absolutePath}")
     }
 
     private var cap = 0L
@@ -62,23 +60,6 @@ internal class MMap(
     override fun putAll(from: Map<out String, String>) {
         delegate.putAll(from)
         sync()
-    }
-
-    private fun zip(src: String): ByteArray {
-        ByteArrayOutputStream().use { output ->
-            GZIPOutputStream(output).use { zip ->
-                zip.write(src.toByteArray())
-            }
-            return output.toByteArray()
-        }
-    }
-
-    private fun unzip(src: ByteArray): String {
-        ByteArrayInputStream(src).use { input ->
-            GZIPInputStream(input).use { unzip ->
-                return String(unzip.readAllBytes())
-            }
-        }
     }
 
     private fun sync() {

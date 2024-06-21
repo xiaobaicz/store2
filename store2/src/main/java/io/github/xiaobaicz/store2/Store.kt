@@ -5,6 +5,7 @@ import io.github.xiaobaicz.store2.exception.MethodDeclarationClassException
 import io.github.xiaobaicz.store2.exception.MethodMatchingException
 import io.github.xiaobaicz.store2.saver.MemorySaver
 import io.github.xiaobaicz.store2.serializer.SimpleSerializer
+import io.github.xiaobaicz.store2.utils.sha1
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import kotlin.reflect.KClass
@@ -115,16 +116,16 @@ class Store<R : Any> private constructor(
 
     operator fun getValue(r: Any?, property: KProperty<*>): R = proxy
 
-    companion object {
-        private val storeCache = HashMap<String, Store<*>>()
-    }
-
     class Factory {
+        private companion object {
+            val storeCache = HashMap<String, Store<*>>()
+        }
+
         private var saver: Saver = MemorySaver
 
         private var serializer: Serializer = SimpleSerializer
 
-        private fun <T : Any> newAndCache(table: String, kClass: KClass<T>): Store<T> {
+        private fun <T : Any> newStoreAndCache(table: String, kClass: KClass<T>): Store<T> {
             return Store(table, kClass, saver, serializer).apply {
                 storeCache[table] = this
             }
@@ -138,7 +139,7 @@ class Store<R : Any> private constructor(
             val token = newToken(kClass, saver, serializer)
             val table = sha1(token)
             @Suppress("UNCHECKED_CAST")
-            return storeCache[table] as Store<T>? ?: newAndCache(table, kClass)
+            return storeCache[table] as Store<T>? ?: newStoreAndCache(table, kClass)
         }
 
         inline fun <reified T : Any> get(): Store<T> = get(T::class)

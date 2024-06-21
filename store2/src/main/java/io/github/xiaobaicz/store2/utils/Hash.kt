@@ -1,4 +1,4 @@
-package io.github.xiaobaicz.store2
+package io.github.xiaobaicz.store2.utils
 
 import java.security.MessageDigest
 
