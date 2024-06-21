@@ -62,6 +62,23 @@ internal class MMap(
         sync()
     }
 
+    override fun remove(key: String): String? {
+        return delegate.remove(key).apply {
+            sync()
+        }
+    }
+
+    override fun remove(key: String, value: String): Boolean {
+        return delegate.remove(key, value).apply {
+            if (this) sync()
+        }
+    }
+
+    override fun clear() {
+        delegate.clear()
+        sync()
+    }
+
     private fun sync() {
         val json = gson.toJson(delegate)
         val content = zip(json)
