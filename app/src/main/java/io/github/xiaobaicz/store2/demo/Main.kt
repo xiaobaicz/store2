@@ -3,7 +3,6 @@ package io.github.xiaobaicz.store2.demo
 import io.github.xiaobaicz.store2.Store
 import io.github.xiaobaicz.store2.demo.store.Local
 import io.github.xiaobaicz.store2.saver.MMapSaver
-import io.github.xiaobaicz.store2.serializer.GsonSerializer
 
 fun main() {
     MMapSaver.dir = "."
@@ -23,11 +22,6 @@ fun main() {
     localStore.clear()
 }
 
-val storeFactory = Store.Factory()
-    .saver(MMapSaver)
-    .serializer(GsonSerializer)
+val storeFactory = Store.Factory(MMapSaver)
 
 val localStore = storeFactory.get<Local>()
-
-
-

@@ -6,7 +6,8 @@ plugins {
 }
 
 dependencies {
-    api(kotlin("reflect"))
+    implementation(kotlin("reflect"))
+    implementation(libs.gson)
 }
 
 java {

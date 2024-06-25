@@ -5,7 +5,7 @@ import io.github.xiaobaicz.store2.Serializer
 import kotlin.reflect.KType
 import kotlin.reflect.jvm.javaType
 
-object GsonSerializer : Serializer {
+object JsonSerializer : Serializer {
     private val gson = Gson()
 
     override fun serialization(any: Any): String {

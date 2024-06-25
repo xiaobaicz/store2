@@ -4,7 +4,7 @@ import io.github.xiaobaicz.store2.annotation.*
 import io.github.xiaobaicz.store2.exception.MethodDeclarationClassException
 import io.github.xiaobaicz.store2.exception.MethodMatchingException
 import io.github.xiaobaicz.store2.saver.MemorySaver
-import io.github.xiaobaicz.store2.serializer.SimpleSerializer
+import io.github.xiaobaicz.store2.serializer.JsonSerializer
 import io.github.xiaobaicz.store2.utils.sha1
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
@@ -130,14 +130,13 @@ class Store<R : Any> private constructor(
 
     operator fun getValue(r: Any?, property: KProperty<*>): R = proxy
 
-    class Factory {
+    class Factory(
+        private val saver: Saver = MemorySaver,
+        private val serializer: Serializer = JsonSerializer,
+    ) {
         private companion object {
             val storeCache = HashMap<String, Store<*>>()
         }
-
-        private var saver: Saver = MemorySaver
-
-        private var serializer: Serializer = SimpleSerializer
 
         private fun <T : Any> newStoreAndCache(table: String, kClass: KClass<T>): Store<T> {
             return Store(table, kClass, saver, serializer).apply {
@@ -157,15 +156,5 @@ class Store<R : Any> private constructor(
         }
 
         inline fun <reified T : Any> get(): Store<T> = get(T::class)
-
-        fun saver(saver: Saver): Factory {
-            this.saver = saver
-            return this
-        }
-
-        fun serializer(serializer: Serializer): Factory {
-            this.serializer = serializer
-            return this
-        }
     }
 }
