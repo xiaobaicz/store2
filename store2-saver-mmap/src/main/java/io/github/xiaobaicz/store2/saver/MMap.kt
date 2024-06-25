@@ -9,6 +9,10 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.nio.file.StandardOpenOption
 
+/**
+ * 1. default dir: tmp dir
+ * 2. struct: |--- head (32byte) ---|--- content ---|
+ */
 internal class MMap(
     private val table: String,
     private val dir: String,
