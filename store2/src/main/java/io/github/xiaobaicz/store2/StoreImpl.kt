@@ -84,8 +84,6 @@ internal class StoreImpl<R : Any>(
     @Suppress("UNCHECKED_CAST")
     override operator fun <T> get(kProperty: KProperty<T>): T? {
         val returnType = kProperty.returnType
-        println(kProperty)
-        println(returnType)
         if (!has(kProperty)) {
             if (returnType.isMarkedNullable) return null
             return getDef(returnType, kProperty) as T
