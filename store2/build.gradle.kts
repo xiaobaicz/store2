@@ -12,16 +12,16 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(11)
 }
 
 publishing {
@@ -29,7 +29,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2"
-            version = "1.0"
+            version = "1.1"
 
             afterEvaluate {
                 from(components["java"])
