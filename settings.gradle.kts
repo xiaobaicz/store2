@@ -9,5 +9,4 @@ include(
     "app",
     "store2",
     "store2-saver-mmap",
-    "store2-serializer-gson",
 )
