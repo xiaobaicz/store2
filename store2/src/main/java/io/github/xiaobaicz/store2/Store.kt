@@ -8,16 +8,40 @@ import kotlin.reflect.KProperty
 
 interface Store<R : Any> {
 
+    /**
+     * field key exist?
+     * @param kProperty table property
+     * @return exist?
+     */
     fun <T> has(kProperty: KProperty<T>): Boolean
 
+    /**
+     * remove field
+     * @param kProperty table property
+     */
     fun <T> remove(kProperty: KProperty<T>)
 
+    /**
+     * clear table
+     */
     fun clear()
 
+    /**
+     * get field value
+     * @param kProperty table property
+     */
     operator fun <T> get(kProperty: KProperty<T>): T?
 
+    /**
+     * set field value
+     * @param kProperty table property
+     * @param value field value
+     */
     operator fun <T> set(kProperty: KProperty<T>, value: T)
 
+    /**
+     * get table instance
+     */
     operator fun getValue(r: Any?, property: KProperty<*>): R
 
     class Factory(
