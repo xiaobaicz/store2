@@ -49,7 +49,7 @@ interface Store<R : Any> {
         private val serializer: Serializer = JsonSerializer,
     ) {
         private companion object {
-            val storeCache = HashMap<String, StoreImpl<*>>()
+            val storeCache = HashMap<String, Store<*>>()
         }
 
         private fun <T : Any> newStoreAndCache(table: String, kClass: KClass<T>): Store<T> {
@@ -66,7 +66,7 @@ interface Store<R : Any> {
             val token = newToken(kClass, saver, serializer)
             val table = sha1(token)
             @Suppress("UNCHECKED_CAST")
-            return storeCache[table] as StoreImpl<T>? ?: newStoreAndCache(table, kClass)
+            return storeCache[table] as Store<T>? ?: newStoreAndCache(table, kClass)
         }
 
         inline fun <reified T : Any> get(): Store<T> = get(T::class)
