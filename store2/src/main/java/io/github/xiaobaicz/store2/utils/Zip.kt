@@ -17,7 +17,7 @@ fun zip(src: String): ByteArray {
 fun unzip(src: ByteArray): String {
     ByteArrayInputStream(src).use { input ->
         GZIPInputStream(input).use { unzip ->
-            return String(unzip.readAllBytes())
+            return String(unzip.readBytes())
         }
     }
 }
