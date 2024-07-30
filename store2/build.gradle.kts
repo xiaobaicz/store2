@@ -29,7 +29,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2"
-            version = "1.3"
+            version = "1.3.1"
 
             afterEvaluate {
                 from(components["java"])
