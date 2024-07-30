@@ -9,6 +9,11 @@ import kotlin.reflect.KProperty
 interface Store<R : Any> {
 
     /**
+     * get table instance
+     */
+    val proxy: R
+
+    /**
      * field key exist?
      * @param kProperty table property
      * @return exist?
@@ -42,7 +47,7 @@ interface Store<R : Any> {
     /**
      * get table instance
      */
-    operator fun getValue(r: Any?, property: KProperty<*>): R
+    operator fun getValue(r: Any?, property: KProperty<*>): R = proxy
 
     class Factory(
         private val saver: Saver = MemorySaver,

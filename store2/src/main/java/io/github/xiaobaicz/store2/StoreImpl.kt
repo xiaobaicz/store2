@@ -71,6 +71,16 @@ internal class StoreImpl<R : Any>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    override val proxy = Proxy.newProxyInstance(kClass.java.classLoader, arrayOf(kClass.java)) { _, method, args ->
+        val argList = args ?: arrayOf()
+        when (method.declaringClass.kotlin) {
+            kClass -> handle(method, argList)
+            Any::class -> method.invoke(this, *argList)
+            else -> MethodDeclarationClassException(kClass, method)
+        }
+    } as R
+
     override fun <T> has(kProperty: KProperty<T>): Boolean = saver.has(table, kProperty.name)
 
     override fun <T> remove(kProperty: KProperty<T>) {
@@ -103,18 +113,4 @@ internal class StoreImpl<R : Any>(
         val data = serializer.serialization(value)
         saver.store(table, kProperty.name, data)
     }
-
-    private val proxy by lazy {
-        @Suppress("UNCHECKED_CAST")
-        Proxy.newProxyInstance(kClass.java.classLoader, arrayOf(kClass.java)) { _, method, args ->
-            val argList = args ?: arrayOf()
-            when (method.declaringClass.kotlin) {
-                kClass -> handle(method, argList)
-                Any::class -> method.invoke(this, *argList)
-                else -> MethodDeclarationClassException(kClass, method)
-            }
-        } as R
-    }
-
-    override operator fun getValue(r: Any?, property: KProperty<*>): R = proxy
 }

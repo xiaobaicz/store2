@@ -1,27 +1,20 @@
 package io.github.xiaobaicz.store2.demo
 
-import io.github.xiaobaicz.store2.Store
 import io.github.xiaobaicz.store2.demo.store.Local
 import io.github.xiaobaicz.store2.saver.MMapSaver
 
 fun main() {
     MMapSaver.dir = "."
-    // get table
-    val local: Local by localStore
     // check key
-    println(localStore.has(Local::version))
+    println(Local.has(Local::version))
     // get
-    println(local.debug)
-    println(local.version)
-    println(local.user)
+    println(Local.debug)
+    println(Local.version)
+    println(Local.user)
     // set
-    local.version = 110
+    Local.version = 110
     // remove key
-    localStore.remove(Local::version)
+    Local.remove(Local::version)
     // clear table
-    localStore.clear()
+    Local.clear()
 }
-
-val storeFactory = Store.Factory(MMapSaver)
-
-val localStore = storeFactory.get<Local>()
