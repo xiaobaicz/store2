@@ -1,0 +1,2 @@
+-keep class ** implements io.github.xiaobaicz.store2.Saver { *; }
+-keep class ** implements io.github.xiaobaicz.store2.Serializer { *; }
