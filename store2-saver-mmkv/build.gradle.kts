@@ -1,42 +1,55 @@
 plugins {
-    `java-library`
-    kotlin("jvm")
+    kotlin("android")
+    id("com.android.library")
     `maven-publish`
     signing
 }
 
-dependencies {
-    api(project(":store2"))
-    implementation(libs.gson)
-}
+android {
+    namespace = "io.github.xiaobaicz.store2.saver"
+    compileSdk = 34
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+    defaultConfig {
+        minSdk = 23
+        consumerProguardFiles("consumer-rules.pro")
     }
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-    withJavadocJar()
-    withSourcesJar()
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
-kotlin {
-    jvmToolchain(11)
+dependencies {
+    implementation(libs.core.ktx)
+    api(project(":store2"))
+    api(libs.mmkv)
 }
 
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
-            artifactId = "store2-saver-mmap"
+            artifactId = "store2-saver-mmkv"
             version = "1.3.1"
 
             afterEvaluate {
-                from(components["java"])
+                from(components["release"])
             }
 
             pom {
-                name = "store-mmap"
+                name = "store-mmkv"
                 description = "java abstract store"
                 url = "https://github.com/xiaobaicz/store2"
                 licenses {
