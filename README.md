@@ -4,27 +4,22 @@
 ~~~ kotlin
 // build.gradle.kts
 dependencies {
-    implementation("io.github.xiaobaicz:store2:1.4")
+    implementation("io.github.xiaobaicz:store2:1.4.1")
     // or
-    implementation("io.github.xiaobaicz:store2-saver-mmap:1.4")
+    implementation("io.github.xiaobaicz:store2-saver-mmap:1.4.1")
     // or
-    implementation("io.github.xiaobaicz:store2-saver-mmkv:1.4")
+    implementation("io.github.xiaobaicz:store2-saver-mmkv:1.4.1")
 }
 ~~~
 
 ~~~ kotlin
-// new store factory
-val factory = Store.Factory()
-
 // get store instance
-val store = factory.get<Table>()
-~~~
+val store = store<Table>()
+val table by store
 
-~~~ kotlin
 // Declaration table interface
 interface Table {
-
-    companion object : Store<Local> by store, Local by store.proxy
+    companion object : Store<Local> by store, Local by table
 
     // Declaration table field (any type)
     var log: Boolean
@@ -32,7 +27,6 @@ interface Table {
     // default value
     @StringDef("1.0")
     var version: String
-    
 }
 ~~~
 

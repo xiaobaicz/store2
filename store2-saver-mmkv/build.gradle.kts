@@ -42,7 +42,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2-saver-mmkv"
-            version = "1.4"
+            version = "1.4.1"
 
             afterEvaluate {
                 from(components["release"])
