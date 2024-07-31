@@ -29,14 +29,14 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2"
-            version = "1.3.1"
+            version = "1.4"
 
             afterEvaluate {
                 from(components["java"])
             }
 
             pom {
-                name = "store-mem"
+                name = "store2"
                 description = "java abstract store"
                 url = "https://github.com/xiaobaicz/store2"
                 licenses {

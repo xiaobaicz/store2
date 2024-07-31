@@ -42,14 +42,14 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2-saver-mmkv"
-            version = "1.3.1"
+            version = "1.4"
 
             afterEvaluate {
                 from(components["release"])
             }
 
             pom {
-                name = "store-mmkv"
+                name = "store2-mmkv"
                 description = "java abstract store"
                 url = "https://github.com/xiaobaicz/store2"
                 licenses {

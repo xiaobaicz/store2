@@ -29,14 +29,14 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.xiaobaicz"
             artifactId = "store2-saver-mmap"
-            version = "1.3.1"
+            version = "1.4"
 
             afterEvaluate {
                 from(components["java"])
             }
 
             pom {
-                name = "store-mmap"
+                name = "store2-mmap"
                 description = "java abstract store"
                 url = "https://github.com/xiaobaicz/store2"
                 licenses {

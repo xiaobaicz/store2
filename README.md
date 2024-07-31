@@ -4,9 +4,11 @@
 ~~~ kotlin
 // build.gradle.kts
 dependencies {
-    implementation("io.github.xiaobaicz:store2:1.3.1")
+    implementation("io.github.xiaobaicz:store2:1.4")
     // or
-    implementation("io.github.xiaobaicz:store2-saver-mmap:1.3.1")
+    implementation("io.github.xiaobaicz:store2-saver-mmap:1.4")
+    // or
+    implementation("io.github.xiaobaicz:store2-saver-mmkv:1.4")
 }
 ~~~
 
