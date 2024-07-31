@@ -15,5 +15,5 @@ private class DefaultMMKVFactory : MMKVFactory {
 
 internal val mmkvFactory: MMKVFactory by lazy {
     val clazz = MMKVFactory::class.java
-    ServiceLoader.load(clazz, clazz.classLoader).toList().firstOrNull() ?: DefaultMMKVFactory()
+    ServiceLoader.load(clazz, clazz.classLoader).firstOrNull() ?: DefaultMMKVFactory()
 }

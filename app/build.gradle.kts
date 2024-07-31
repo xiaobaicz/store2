@@ -3,6 +3,9 @@ plugins {
     kotlin("jvm")
 }
 
+group = "io.github.xiaobaicz.store2.demo"
+version = "0.0.1"
+
 dependencies {
     implementation(project(":store2-saver-mmap"))
 }
