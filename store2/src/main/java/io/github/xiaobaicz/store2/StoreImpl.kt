@@ -1,6 +1,14 @@
 package io.github.xiaobaicz.store2
 
-import io.github.xiaobaicz.store2.annotation.*
+import io.github.xiaobaicz.store2.annotation.AnyDef
+import io.github.xiaobaicz.store2.annotation.BoolDef
+import io.github.xiaobaicz.store2.annotation.ByteDef
+import io.github.xiaobaicz.store2.annotation.DoubleDef
+import io.github.xiaobaicz.store2.annotation.FloatDef
+import io.github.xiaobaicz.store2.annotation.IntDef
+import io.github.xiaobaicz.store2.annotation.LongDef
+import io.github.xiaobaicz.store2.annotation.ShortDef
+import io.github.xiaobaicz.store2.annotation.StringDef
 import io.github.xiaobaicz.store2.exception.MethodDeclarationClassException
 import io.github.xiaobaicz.store2.exception.MethodMatchingException
 import java.lang.reflect.Method
